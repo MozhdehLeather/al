@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- JSZip and FileSaver Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -15,23 +18,27 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth; /* Enable smooth scrolling globally */
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #F0F4F8;
-            color: #2D3748;
+            color: #1A202C; /* Darker text for better contrast */
             line-height: 1.7;
             overflow-x: hidden;
         }
 
         h1, h2, h3 {
             font-family: 'Lora', serif;
-            color: #5E8CBB;
+            color: #2B6CB0; /* Darker primary color */
         }
 
         /* Sidebar Navigation */
         .sidebar {
             width: 260px;
-            background-color: #5E8CBB;
+            background-color: #2B6CB0; /* Darker sidebar */
             position: fixed;
             top: 0;
             left: -260px;
@@ -53,25 +60,25 @@
         }
 
         .sidebar-header h3 {
-            color: #fff;
+            color: #FFFFFF;
             font-size: 1.6rem;
         }
 
         .close-btn {
             background: none;
             border: none;
-            color: #fff;
+            color: #FFFFFF;
             font-size: 1.5rem;
             cursor: pointer;
             transition: color 0.3s;
         }
 
         .close-btn:hover {
-            color: #A3BFFA;
+            color: #63B3ED; /* Adjusted hover color */
         }
 
         .sidebar a {
-            color: #fff;
+            color: #FFFFFF;
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -85,7 +92,7 @@
         }
 
         .sidebar a:hover {
-            color: #A3BFFA;
+            color: #63B3ED;
         }
 
         .menu-btn {
@@ -95,14 +102,14 @@
             font-size: 1.5rem;
             background: none;
             border: none;
-            color: #5E8CBB;
+            color: #2B6CB0;
             cursor: pointer;
             z-index: 1001;
             transition: color 0.3s;
         }
 
         .menu-btn:hover {
-            color: #A3BFFA;
+            color: #63B3ED;
         }
 
         /* Overlay */
@@ -132,7 +139,7 @@
         }
 
         .section {
-            background-color: #fff;
+            background-color: #FFFFFF;
             padding: 2rem;
             margin-bottom: 2rem;
             border-radius: 12px;
@@ -175,7 +182,7 @@
         }
 
         .section li i {
-            color: #5E8CBB;
+            color: #2B6CB0;
             margin-right: 1rem;
             font-size: 1.3rem;
             transition: transform 0.3s;
@@ -186,7 +193,7 @@
         }
 
         .highlight {
-            color: #A3BFFA;
+            color: #63B3ED; /* Adjusted highlight color */
             font-weight: 600;
         }
 
@@ -204,21 +211,21 @@
         input, textarea, select {
             width: 100%;
             padding: 0.8rem;
-            border: 1px solid #A3BFFA;
+            border: 1px solid #63B3ED;
             border-radius: 5px;
             font-size: 1rem;
             transition: border-color 0.3s;
         }
 
         input:focus, textarea:focus, select:focus {
-            border-color: #5E8CBB;
+            border-color: #2B6CB0;
             outline: none;
         }
 
         button {
             padding: 0.8rem 1.5rem;
-            background-color: #5E8CBB;
-            color: #fff;
+            background-color: #2B6CB0;
+            color: #FFFFFF;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -226,7 +233,7 @@
         }
 
         button:hover {
-            background-color: #A3BFFA;
+            background-color: #63B3ED;
         }
 
         /* Table Styles */
@@ -239,25 +246,27 @@
         th, td {
             padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid #A3BFFA;
+            border-bottom: 1px solid #63B3ED;
         }
 
         th {
-            background-color: #5E8CBB;
-            color: #fff;
+            background-color: #2B6CB0;
+            color: #FFFFFF;
         }
 
-        .view-btn {
+        .view-btn, .delete-btn {
             background: none;
             border: none;
-            color: #5E8CBB;
+            color: #2B6CB0;
             cursor: pointer;
             text-decoration: underline;
             padding: 0;
+            margin-right: 1rem;
+            transition: color 0.3s;
         }
 
-        .view-btn:hover {
-            color: #A3BFFA;
+        .view-btn:hover, .delete-btn:hover {
+            color: #63B3ED;
         }
 
         /* Modal Styles */
@@ -279,7 +288,7 @@
         }
 
         .modal-content {
-            background: #fff;
+            background: #FFFFFF;
             padding: 2rem;
             border-radius: 10px;
             max-width: 80%;
@@ -295,12 +304,13 @@
             background: none;
             border: none;
             font-size: 1.5rem;
-            color: #5E8CBB;
+            color: #2B6CB0;
             cursor: pointer;
+            transition: color 0.3s;
         }
 
         .modal-close:hover {
-            color: #A3BFFA;
+            color: #63B3ED;
         }
 
         .modal img {
@@ -308,12 +318,30 @@
             height: auto;
         }
 
+        /* Download Button */
+        .download-section {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        #download-zip {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            background-color: #2B6CB0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #download-zip:hover {
+            background-color: #63B3ED;
+        }
+
         /* Footer */
         footer {
             text-align: center;
             padding: 1.5rem;
             background-color: #4A5568;
-            color: #fff;
+            color: #FFFFFF;
             margin-top: 3rem;
         }
 
@@ -327,6 +355,10 @@
             .sidebar {
                 width: 220px;
                 left: -220px;
+            }
+            #download-zip {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
             }
         }
     </style>
@@ -362,9 +394,7 @@
     <!-- Main Content -->
     <div class="container">
         <h1>Alzheimer’s Care Guide</h1>
-        <p>never too small
-            to make a difference
-            winter wren</p>
+        <p>never too small to make a difference winter wren.</p>
 
         <!-- Section 1: Understanding Alzheimer’s -->
         <div class="section" id="understanding">
@@ -545,6 +575,7 @@
                             <th>Date</th>
                             <th>Mood</th>
                             <th>Notes</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -595,6 +626,11 @@
                 <p>Caring for an Alzheimer’s patient is tough, but with <span class="highlight">love, patience, and knowledge</span>, you can make a difference.</p>
             </div>
         </div>
+
+        <!-- Download Button Section -->
+        <div class="download-section">
+            <button id="download-zip"><i class="fas fa-download"></i> Download All Data as ZIP</button>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -628,34 +664,80 @@
             });
         });
 
-        // Mood Tracker
+        // Mood Tracker with Delete
         const moodForm = document.getElementById('mood-form');
         const moodTable = document.getElementById('mood-table').querySelector('tbody');
+        let moodEntries = JSON.parse(localStorage.getItem('moodEntries')) || [];
+
+        function renderMoodEntries() {
+            moodTable.innerHTML = '';
+            moodEntries.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.date}</td>
+                    <td>${entry.mood}</td>
+                    <td>${entry.notes}</td>
+                    <td><button class="delete-btn" data-index="${index}">Delete</button></td>
+                `;
+                moodTable.appendChild(row);
+                row.querySelector('.delete-btn').addEventListener('click', () => {
+                    moodEntries.splice(index, 1);
+                    localStorage.setItem('moodEntries', JSON.stringify(moodEntries));
+                    renderMoodEntries();
+                });
+            });
+        }
+
+        renderMoodEntries();
+
         moodForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const date = document.getElementById('mood-date').value;
             const mood = document.getElementById('mood').value;
             const notes = document.getElementById('notes').value;
 
-            const row = document.createElement('tr');
-            row.innerHTML = `<td>${date}</td><td>${mood}</td><td>${notes}</td>`;
-            moodTable.appendChild(row);
-
+            moodEntries.push({ date, mood, notes });
+            localStorage.setItem('moodEntries', JSON.stringify(moodEntries));
+            renderMoodEntries();
             moodForm.reset();
         });
 
-        // Doctor’s Note Upload with localStorage
+        // Doctor’s Note Upload with Delete
         const uploadForm = document.getElementById('upload-form');
         const uploadTable = document.getElementById('upload-table').querySelector('tbody');
         const modal = document.getElementById('image-modal');
         const modalImage = document.getElementById('modal-image');
         const modalClose = document.querySelector('.modal-close');
-
-        // Load existing uploads from localStorage
         let uploads = JSON.parse(localStorage.getItem('doctorNotes')) || [];
-        uploads.forEach((upload, index) => {
-            addUploadToTable(upload, index);
-        });
+
+        function renderUploads() {
+            uploadTable.innerHTML = '';
+            uploads.forEach((upload, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${upload.name}</td>
+                    <td>${upload.desc}</td>
+                    <td>
+                        <button class="view-btn" data-index="${index}">View</button>
+                        <button class="delete-btn" data-index="${index}">Delete</button>
+                    </td>
+                `;
+                uploadTable.appendChild(row);
+
+                row.querySelector('.view-btn').addEventListener('click', () => {
+                    modalImage.src = upload.data;
+                    modal.classList.add('active');
+                });
+
+                row.querySelector('.delete-btn').addEventListener('click', () => {
+                    uploads.splice(index, 1);
+                    localStorage.setItem('doctorNotes', JSON.stringify(uploads));
+                    renderUploads();
+                });
+            });
+        }
+
+        renderUploads();
 
         uploadForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -667,10 +749,9 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const base64Image = e.target.result;
-                    const upload = { name: file.name, desc: desc, data: base64Image };
-                    uploads.push(upload);
+                    uploads.push({ name: file.name, desc, data: base64Image });
                     localStorage.setItem('doctorNotes', JSON.stringify(uploads));
-                    addUploadToTable(upload, uploads.length - 1);
+                    renderUploads();
                 };
                 reader.readAsDataURL(file);
             }
@@ -678,29 +759,35 @@
             uploadForm.reset();
         });
 
-        function addUploadToTable(upload, index) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${upload.name}</td>
-                <td>${upload.desc}</td>
-                <td><button class="view-btn" data-index="${index}">View</button></td>
-            `;
-            uploadTable.appendChild(row);
-
-            row.querySelector('.view-btn').addEventListener('click', () => {
-                modalImage.src = upload.data;
-                modal.classList.add('active');
-            });
-        }
-
-        modalClose.addEventListener('click', () => {
-            modal.classList.remove('active');
+        modalClose.addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
         });
 
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
+        // Download ZIP
+        const downloadBtn = document.getElementById('download-zip');
+        downloadBtn.addEventListener('click', () => {
+            const zip = new JSZip();
+
+            const moodText = moodEntries.map(entry => 
+                `Date: ${entry.date}\nMood: ${entry.mood}\nNotes: ${entry.notes}\n---`
+            ).join('\n');
+            zip.file('mood_log.txt', moodText || 'No mood entries recorded yet.');
+
+            const notesText = uploads.map(upload => 
+                `File: ${upload.name}\nDescription: ${upload.desc}\n---`
+            ).join('\n');
+            zip.file('doctor_notes.txt', notesText || 'No doctor’s notes uploaded yet.');
+
+            uploads.forEach((upload, index) => {
+                const base64Data = upload.data.split(',')[1];
+                const extension = upload.name.split('.').pop();
+                zip.file(`doctor_note_${index + 1}.${extension}`, base64Data, { base64: true });
+            });
+
+            zip.generateAsync({ type: 'blob' }).then(blob => {
+                saveAs(blob, 'alzheimers_care_data.zip');
+            });
         });
     </script>
 </body>
