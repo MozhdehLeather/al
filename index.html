@@ -34,15 +34,17 @@
 
         /* Sidebar */
         .sidebar {
-            width: 240px;
+            width: 100%; /* Full width on small devices */
+            max-width: 240px; /* Limit width on larger screens */
             background-color: #333333;
             position: fixed;
             top: 0;
-            left: -240px;
+            left: -100%; /* Fully hidden off-screen */
             height: 100%;
-            padding: 1.5rem;
+            padding: 1rem;
             transition: left 0.3s ease;
             z-index: 1000;
+            overflow-y: auto;
         }
 
         .sidebar.active {
@@ -50,8 +52,9 @@
         }
 
         .sidebar-header {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             text-align: center;
+            position: relative;
         }
 
         .sidebar-header h3 {
@@ -66,8 +69,8 @@
             font-size: 1.5rem;
             cursor: pointer;
             position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
+            top: 0.5rem;
+            right: 1rem;
         }
 
         .close-btn:hover {
@@ -152,6 +155,7 @@
 
         .intro-card img {
             max-width: 100%;
+            width: 300px;
             height: auto;
             filter: grayscale(100%);
             margin-bottom: 0.75rem;
@@ -260,12 +264,14 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 0.5rem;
+            table-layout: fixed;
         }
 
         th, td {
             padding: 0.6rem;
             text-align: left;
             border-bottom: 1px solid #EEEEEE;
+            word-wrap: break-word;
         }
 
         th {
@@ -368,15 +374,11 @@
             .section h2 {
                 font-size: 1.3rem;
             }
-            .sidebar {
-                width: 200px;
-                left: -200px;
-            }
-            .sidebar a {
-                font-size: 0.9rem;
-            }
             .intro-card img {
-                max-width: 80%;
+                width: 200px;
+            }
+            table {
+                font-size: 0.9rem;
             }
         }
 
@@ -390,14 +392,37 @@
             .section {
                 padding: 0.75rem;
             }
-            table, th, td {
+            .intro-card img {
+                width: 150px;
+            }
+            table {
+                display: block;
+                overflow-x: auto;
                 font-size: 0.85rem;
+            }
+            th, td {
+                min-width: 100px;
             }
             button {
                 width: 100%;
             }
-            .intro-card img {
-                max-width: 100%;
+            .container {
+                margin-top: 4rem;
+            }
+            .sidebar {
+                width: 80%; /* Slightly less than full width for better fit */
+                max-width: 200px; /* Cap width for small screens */
+                left: -80%; /* Match width for smooth slide */
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .sidebar a {
+                font-size: 0.9rem;
+            }
+            .menu-btn {
+                top: 0.75rem;
+                left: 0.75rem;
             }
         }
     </style>
@@ -691,6 +716,7 @@
         function toggleSidebar() {
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : 'auto';
         }
 
         menuBtn.addEventListener('click', toggleSidebar);
@@ -728,6 +754,7 @@
                     renderMoodEntries();
                 });
             });
+            moodTable.offsetHeight;
         }
 
         renderMoodEntries();
@@ -777,6 +804,7 @@
                     renderUploads();
                 });
             });
+            uploadTable.offsetHeight;
         }
 
         renderUploads();
