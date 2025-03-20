@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alzheimer’s Care Guide</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- JSZip and FileSaver Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
@@ -19,31 +16,31 @@
         }
 
         html {
-            scroll-behavior: smooth; /* Enable smooth scrolling globally */
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #F0F4F8;
-            color: #1A202C; /* Darker text for better contrast */
-            line-height: 1.7;
+            font-family: 'Roboto', sans-serif;
+            background-color: #F5F5F5;
+            color: #333333;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
         h1, h2, h3 {
-            font-family: 'Lora', serif;
-            color: #2B6CB0; /* Darker primary color */
+            font-weight: 700;
+            color: #333333;
         }
 
-        /* Sidebar Navigation */
+        /* Sidebar */
         .sidebar {
-            width: 260px;
-            background-color: #2B6CB0; /* Darker sidebar */
+            width: 240px;
+            background-color: #333333;
             position: fixed;
             top: 0;
-            left: -260px;
+            left: -240px;
             height: 100%;
-            padding: 2rem 1rem;
+            padding: 1.5rem;
             transition: left 0.3s ease;
             z-index: 1000;
         }
@@ -53,15 +50,13 @@
         }
 
         .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
 
         .sidebar-header h3 {
             color: #FFFFFF;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
         }
 
         .close-btn {
@@ -70,11 +65,13 @@
             color: #FFFFFF;
             font-size: 1.5rem;
             cursor: pointer;
-            transition: color 0.3s;
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
         }
 
         .close-btn:hover {
-            color: #63B3ED; /* Adjusted hover color */
+            color: #CCCCCC;
         }
 
         .sidebar a {
@@ -82,17 +79,17 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            margin: 1.2rem 0;
-            font-size: 1.1rem;
-            transition: color 0.3s;
+            padding: 0.6rem 0;
+            font-size: 0.95rem;
         }
 
         .sidebar a i {
-            margin-right: 0.8rem;
+            margin-right: 0.75rem;
+            width: 18px;
         }
 
         .sidebar a:hover {
-            color: #63B3ED;
+            color: #CCCCCC;
         }
 
         .menu-btn {
@@ -102,24 +99,22 @@
             font-size: 1.5rem;
             background: none;
             border: none;
-            color: #2B6CB0;
+            color: #333333;
             cursor: pointer;
             z-index: 1001;
-            transition: color 0.3s;
         }
 
         .menu-btn:hover {
-            color: #63B3ED;
+            color: #666666;
         }
 
-        /* Overlay */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.4);
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease;
@@ -133,30 +128,60 @@
 
         /* Main Content */
         .container {
-            max-width: 1100px;
-            margin: 4rem auto 2rem;
-            padding: 0 2rem;
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .intro-card {
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .intro-card img {
+            max-width: 100%;
+            height: auto;
+            filter: grayscale(100%);
+            margin-bottom: 0.75rem;
+            border-radius: 4px;
+        }
+
+        .intro-card p {
+            font-size: 0.95rem;
+            color: #666666;
         }
 
         .section {
             background-color: #FFFFFF;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #EEEEEE;
         }
 
         .section h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            cursor: pointer;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
         }
 
         .section h2 i {
-            transition: transform 0.3s;
+            font-size: 0.9rem;
+            color: #666666;
         }
 
         .section h2.active i {
@@ -165,6 +190,7 @@
 
         .section-content {
             display: none;
+            padding-top: 0.5rem;
         }
 
         .section-content.active {
@@ -173,103 +199,97 @@
 
         .section ul {
             list-style: none;
+            padding-left: 0;
         }
 
         .section li {
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: flex-start;
         }
 
         .section li i {
-            color: #2B6CB0;
-            margin-right: 1rem;
-            font-size: 1.3rem;
-            transition: transform 0.3s;
+            margin-right: 0.75rem;
+            font-size: 1rem;
+            width: 18px;
+            color: #666666;
         }
 
-        .section li:hover i {
-            transform: scale(1.1);
+        h3 {
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem;
         }
 
-        .highlight {
-            color: #63B3ED; /* Adjusted highlight color */
-            font-weight: 600;
-        }
-
-        /* Form Styles */
+        /* Forms */
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-weight: 400;
+            color: #666666;
         }
 
         input, textarea, select {
             width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #63B3ED;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            border-color: #2B6CB0;
-            outline: none;
+            padding: 0.6rem;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            background-color: #FAFAFA;
         }
 
         button {
-            padding: 0.8rem 1.5rem;
-            background-color: #2B6CB0;
+            padding: 0.6rem 1rem;
+            background-color: #666666;
             color: #FFFFFF;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 0.95rem;
         }
 
         button:hover {
-            background-color: #63B3ED;
+            background-color: #888888;
         }
 
-        /* Table Styles */
+        /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
         th, td {
-            padding: 1rem;
+            padding: 0.6rem;
             text-align: left;
-            border-bottom: 1px solid #63B3ED;
+            border-bottom: 1px solid #EEEEEE;
         }
 
         th {
-            background-color: #2B6CB0;
+            background-color: #666666;
             color: #FFFFFF;
+            font-weight: 400;
         }
 
         .view-btn, .delete-btn {
             background: none;
             border: none;
-            color: #2B6CB0;
+            color: #666666;
             cursor: pointer;
-            text-decoration: underline;
             padding: 0;
-            margin-right: 1rem;
-            transition: color 0.3s;
+            margin-right: 0.75rem;
+            text-decoration: none;
+            font-size: 0.9rem;
         }
 
         .view-btn:hover, .delete-btn:hover {
-            color: #63B3ED;
+            color: #888888;
         }
 
-        /* Modal Styles */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -277,7 +297,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -289,28 +309,27 @@
 
         .modal-content {
             background: #FFFFFF;
-            padding: 2rem;
-            border-radius: 10px;
-            max-width: 80%;
-            max-height: 80%;
+            padding: 1rem;
+            border: 1px solid #EEEEEE;
+            max-width: 90%;
+            max-height: 90%;
             overflow: auto;
             position: relative;
         }
 
         .modal-close {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 0.5rem;
+            right: 0.5rem;
             background: none;
             border: none;
-            font-size: 1.5rem;
-            color: #2B6CB0;
+            font-size: 1.2rem;
+            color: #666666;
             cursor: pointer;
-            transition: color 0.3s;
         }
 
         .modal-close:hover {
-            color: #63B3ED;
+            color: #888888;
         }
 
         .modal img {
@@ -318,47 +337,67 @@
             height: auto;
         }
 
-        /* Download Button */
+        /* Download Section */
         .download-section {
             text-align: center;
             margin: 2rem 0;
         }
 
         #download-zip {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            background-color: #2B6CB0;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #download-zip:hover {
-            background-color: #63B3ED;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.95rem;
         }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 1.5rem;
-            background-color: #4A5568;
+            padding: 1rem;
+            background-color: #333333;
             color: #FFFFFF;
-            margin-top: 3rem;
+            font-size: 0.9rem;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             .container {
-                padding: 0 1rem;
+                padding: 0 0.75rem;
             }
-            .section {
-                padding: 1.5rem;
+            h1 {
+                font-size: 1.8rem;
+            }
+            .section h2 {
+                font-size: 1.3rem;
             }
             .sidebar {
-                width: 220px;
-                left: -220px;
+                width: 200px;
+                left: -200px;
             }
-            #download-zip {
-                padding: 0.8rem 1.5rem;
-                font-size: 1rem;
+            .sidebar a {
+                font-size: 0.9rem;
+            }
+            .intro-card img {
+                max-width: 80%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            .section h2 {
+                font-size: 1.2rem;
+            }
+            .section {
+                padding: 0.75rem;
+            }
+            table, th, td {
+                font-size: 0.85rem;
+            }
+            button {
+                width: 100%;
+            }
+            .intro-card img {
+                max-width: 100%;
             }
         }
     </style>
@@ -394,17 +433,20 @@
     <!-- Main Content -->
     <div class="container">
         <h1>Alzheimer’s Care Guide</h1>
-        <p>never too small to make a difference winter wren.</p>
+        <div class="intro-card">
+            <img src="https://i.pinimg.com/736x/87/89/80/878980f5e6e1e3706b0e1f354a52290e.jpg" alt="Winter Wren">
+            <p>never too small to make a difference winter wren</p>
+        </div>
 
         <!-- Section 1: Understanding Alzheimer’s -->
         <div class="section" id="understanding">
             <h2>1. Understanding Alzheimer’s <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
                 <ul>
-                    <li><i class="fas fa-brain"></i>A <span class="highlight">degenerative disease</span> affecting memory, thinking, and behavior.</li>
-                    <li><i class="fas fa-memory"></i>Causes <span class="highlight">memory loss</span>: Forgetting recent events or names.</li>
-                    <li><i class="fas fa-comment-slash"></i>Leads to <span class="highlight">communication difficulties</span>.</li>
-                    <li><i class="fas fa-user-alt-slash"></i>Results in <span class="highlight">loss of independence</span>.</li>
+                    <li><i class="fas fa-brain"></i>A degenerative disease affecting memory, thinking, and behavior</li>
+                    <li><i class="fas fa-memory"></i>Causes memory loss: Forgetting recent events or names</li>
+                    <li><i class="fas fa-comment-slash"></i>Leads to communication difficulties</li>
+                    <li><i class="fas fa-user-alt-slash"></i>Results in loss of independence</li>
                 </ul>
             </div>
         </div>
@@ -414,11 +456,11 @@
             <h2>2. Communication Techniques <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
                 <ul>
-                    <li><i class="fas fa-comment"></i><span class="highlight">Speak slowly and clearly</span> in short sentences.</li>
-                    <li><i class="fas fa-handshake"></i>Use <span class="highlight">non-verbal cues</span>: Eye contact, gestures.</li>
-                    <li><i class="fas fa-clock"></i>Be patient: Allow time for responses.</li>
-                    <li><i class="fas fa-ban"></i>Don’t argue or correct mistakes.</li>
-                    <li><i class="fas fa-sticky-note"></i>Use reminders: Clocks, labeled objects.</li>
+                    <li><i class="fas fa-comment"></i>Speak slowly and clearly in short sentences</li>
+                    <li><i class="fas fa-handshake"></i>Use non-verbal cues: Eye contact, gestures</li>
+                    <li><i class="fas fa-clock"></i>Be patient: Allow time for responses</li>
+                    <li><i class="fas fa-ban"></i>Don’t argue or correct mistakes</li>
+                    <li><i class="fas fa-sticky-note"></i>Use reminders: Clocks, labeled objects</li>
                 </ul>
             </div>
         </div>
@@ -429,16 +471,16 @@
             <div class="section-content">
                 <h3>Morning Care</h3>
                 <ul>
-                    <li><i class="fas fa-sun"></i>Wake up at the same time daily.</li>
-                    <li><i class="fas fa-toothbrush"></i>Assist with hygiene: Step-by-step instructions.</li>
-                    <li><i class="fas fa-tshirt"></i>Choose <span class="highlight">easy-to-wear clothing</span>.</li>
-                    <li><i class="fas fa-glass-water"></i>Ensure morning hydration.</li>
+                    <li><i class="fas fa-sun"></i>Wake up at the same time daily</li>
+                    <li><i class="fas fa-toothbrush"></i>Assist with hygiene: Step-by-step instructions</li>
+                    <li><i class="fas fa-tshirt"></i>Choose easy-to-wear clothing</li>
+                    <li><i class="fas fa-glass-water"></i>Ensure morning hydration</li>
                 </ul>
                 <h3>Meals & Nutrition</h3>
                 <ul>
-                    <li><i class="fas fa-utensils"></i>Encourage <span class="highlight">small, frequent meals</span>.</li>
-                    <li><i class="fas fa-carrot"></i>Best foods: Spinach, berries, nuts.</li>
-                    <li><i class="fas fa-ban"></i>Avoid: Sugar, processed foods, caffeine.</li>
+                    <li><i class="fas fa-utensils"></i>Encourage small, frequent meals</li>
+                    <li><i class="fas fa-carrot"></i>Best foods: Spinach, berries, nuts</li>
+                    <li><i class="fas fa-ban"></i>Avoid: Sugar, processed foods, caffeine</li>
                 </ul>
             </div>
         </div>
@@ -448,9 +490,9 @@
             <h2>4. Exercise & Physical Activity <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
                 <ul>
-                    <li><i class="fas fa-walking"></i><span class="highlight">Gentle exercises</span>: Walking, stretching.</li>
-                    <li><i class="fas fa-hand-paper"></i>Hand exercises: Squeezing a soft ball.</li>
-                    <li><i class="fas fa-music"></i>Dancing to music boosts mood.</li>
+                    <li><i class="fas fa-walking"></i>Gentle exercises: Walking, stretching</li>
+                    <li><i class="fas fa-hand-paper"></i>Hand exercises: Squeezing a soft ball</li>
+                    <li><i class="fas fa-music"></i>Dancing to music boosts mood</li>
                 </ul>
             </div>
         </div>
@@ -460,10 +502,10 @@
             <h2>5. Emotional & Behavioral Support <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
                 <ul>
-                    <li><i class="fas fa-heart"></i><span class="highlight">Stay calm</span>: Hold their hand, reassure them.</li>
-                    <li><i class="fas fa-volume-mute"></i>Avoid loud noises.</li>
-                    <li><i class="fas fa-music"></i>Use <span class="highlight">music therapy</span> to soothe.</li>
-                    <li><i class="fas fa-seedling"></i>Engage in familiar activities.</li>
+                    <li><i class="fas fa-heart"></i>Stay calm: Hold their hand, reassure them</li>
+                    <li><i class="fas fa-volume-mute"></i>Avoid loud noises</li>
+                    <li><i class="fas fa-music"></i>Use music therapy to soothe</li>
+                    <li><i class="fas fa-seedling"></i>Engage in familiar activities</li>
                 </ul>
             </div>
         </div>
@@ -473,10 +515,10 @@
             <h2>6. Preventing Wandering & Safety <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
                 <ul>
-                    <li><i class="fas fa-lock"></i>Keep doors locked safely.</li>
-                    <li><i class="fas fa-sign"></i>Label rooms clearly.</li>
-                    <li><i class="fas fa-lightbulb"></i>Install night lights.</li>
-                    <li><i class="fas fa-map-marker-alt"></i>Use GPS tracking if needed.</li>
+                    <li><i class="fas fa-lock"></i>Keep doors locked safely</li>
+                    <li><i class="fas fa-sign"></i>Label rooms clearly</li>
+                    <li><i class="fas fa-lightbulb"></i>Install night lights</li>
+                    <li><i class="fas fa-map-marker-alt"></i>Use GPS tracking if needed</li>
                 </ul>
             </div>
         </div>
@@ -486,10 +528,10 @@
             <h2>7. Sleeping & Resting Habits <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
                 <ul>
-                    <li><i class="fas fa-bed"></i>Create a <span class="highlight">relaxing bedtime routine</span>.</li>
-                    <li><i class="fas fa-clock"></i>Limit daytime naps.</li>
-                    <li><i class="fas fa-coffee"></i>No caffeine in the evening.</li>
-                    <li><i class="fas fa-lightbulb"></i>Use a soft night light.</li>
+                    <li><i class="fas fa-bed"></i>Create a relaxing bedtime routine</li>
+                    <li><i class="fas fa-clock"></i>Limit daytime naps</li>
+                    <li><i class="fas fa-coffee"></i>No caffeine in the evening</li>
+                    <li><i class="fas fa-lightbulb"></i>Use a soft night light</li>
                 </ul>
             </div>
         </div>
@@ -499,9 +541,9 @@
             <h2>8. Medication & Medical Support <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
                 <ul>
-                    <li><i class="fas fa-pills"></i>Follow prescriptions strictly.</li>
-                    <li><i class="fas fa-lock"></i>Store medicines safely.</li>
-                    <li><i class="fas fa-stethoscope"></i>Regular neurologist visits.</li>
+                    <li><i class="fas fa-pills"></i>Follow prescriptions strictly</li>
+                    <li><i class="fas fa-lock"></i>Store medicines safely</li>
+                    <li><i class="fas fa-stethoscope"></i>Regular neurologist visits</li>
                 </ul>
             </div>
         </div>
@@ -511,10 +553,10 @@
             <h2>9. Activities & Mind Engagement <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
                 <ul>
-                    <li><i class="fas fa-puzzle-piece"></i>Puzzles and memory games.</li>
-                    <li><i class="fas fa-images"></i>Look at old photo albums.</li>
-                    <li><i class="fas fa-paint-brush"></i>Coloring or drawing.</li>
-                    <li><i class="fas fa-seedling"></i>Gardening for hands-on fun.</li>
+                    <li><i class="fas fa-puzzle-piece"></i>Puzzles and memory games</li>
+                    <li><i class="fas fa-images"></i>Look at old photo albums</li>
+                    <li><i class="fas fa-paint-brush"></i>Coloring or drawing</li>
+                    <li><i class="fas fa-seedling"></i>Gardening for hands-on fun</li>
                 </ul>
             </div>
         </div>
@@ -524,9 +566,9 @@
             <h2>10. Caregiver Self-Care <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
                 <ul>
-                    <li><i class="fas fa-users"></i>Join a <span class="highlight">support group</span>.</li>
-                    <li><i class="fas fa-coffee"></i>Take breaks regularly.</li>
-                    <li><i class="fas fa-hands-helping"></i>Ask for help from others.</li>
+                    <li><i class="fas fa-users"></i>Join a support group</li>
+                    <li><i class="fas fa-coffee"></i>Take breaks regularly</li>
+                    <li><i class="fas fa-hands-helping"></i>Ask for help from others</li>
                 </ul>
             </div>
         </div>
@@ -536,9 +578,9 @@
             <h2>11. When to Seek Professional Help <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
                 <ul>
-                    <li><i class="fas fa-exclamation-triangle"></i>Frequent aggression or violence.</li>
-                    <li><i class="fas fa-utensils"></i>Stops eating or drinking.</li>
-                    <li><i class="fas fa-hospital"></i>Consider a care home if needed.</li>
+                    <li><i class="fas fa-exclamation-triangle"></i>Frequent aggression or violence</li>
+                    <li><i class="fas fa-utensils"></i>Stops eating or drinking</li>
+                    <li><i class="fas fa-hospital"></i>Consider a care home if needed</li>
                 </ul>
             </div>
         </div>
@@ -623,19 +665,19 @@
         <div class="section">
             <h2>Final Words <i class="fas fa-chevron-down"></i></h2>
             <div class="section-content">
-                <p>Caring for an Alzheimer’s patient is tough, but with <span class="highlight">love, patience, and knowledge</span>, you can make a difference.</p>
+                <p>Caring for an Alzheimer’s patient is tough, but with love, patience, and knowledge, you can make a difference.</p>
             </div>
         </div>
 
         <!-- Download Button Section -->
         <div class="download-section">
-            <button id="download-zip"><i class="fas fa-download"></i> Download All Data as ZIP</button>
+            <button id="download-zip"><i class="fas fa-download"></i> Download All Data</button>
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        <p>© 2025 Alzheimer’s Care Guide | Made with <i class="fas fa-heart"></i></p>
+        <p>© 2025 Alzheimer’s Care Guide</p>
     </footer>
 
     <!-- JavaScript -->
