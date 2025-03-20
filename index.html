@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alzheimer’s Care Guide</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F0F4F8;
+            color: #2D3748;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+            color: #5E8CBB;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 260px;
+            background-color: #5E8CBB;
+            position: fixed;
+            top: 0;
+            left: -260px;
+            height: 100%;
+            padding: 2rem 1rem;
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-header h3 {
+            color: #fff;
+            font-size: 1.6rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #A3BFFA;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .sidebar a i {
+            margin-right: 0.8rem;
+        }
+
+        .sidebar a:hover {
+            color: #A3BFFA;
+        }
+
+        .menu-btn {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: #5E8CBB;
+            cursor: pointer;
+            z-index: 1001;
+            transition: color 0.3s;
+        }
+
+        .menu-btn:hover {
+            color: #A3BFFA;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1100px;
+            margin: 4rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background-color: #fff;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section h2 i {
+            transition: transform 0.3s;
+        }
+
+        .section h2.active i {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .section ul {
+            list-style: none;
+        }
+
+        .section li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .section li i {
+            color: #5E8CBB;
+            margin-right: 1rem;
+            font-size: 1.3rem;
+            transition: transform 0.3s;
+        }
+
+        .section li:hover i {
+            transform: scale(1.1);
+        }
+
+        .highlight {
+            color: #A3BFFA;
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #A3BFFA;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #5E8CBB;
+            outline: none;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            background-color: #5E8CBB;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #A3BFFA;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #A3BFFA;
+        }
+
+        th {
+            background-color: #5E8CBB;
+            color: #fff;
+        }
+
+        .view-btn {
+            background: none;
+            border: none;
+            color: #5E8CBB;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .view-btn:hover {
+            color: #A3BFFA;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 80%;
+            max-height: 80%;
+            overflow: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #5E8CBB;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #A3BFFA;
+        }
+
+        .modal img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #4A5568;
+            color: #fff;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            .section {
+                padding: 1.5rem;
+            }
+            .sidebar {
+                width: 220px;
+                left: -220px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Button -->
+    <button class="menu-btn"><i class="fas fa-bars"></i></button>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Care Guide</h3>
+            <button class="close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <a href="#understanding"><i class="fas fa-brain"></i> Understanding</a>
+        <a href="#communication"><i class="fas fa-comment"></i> Communication</a>
+        <a href="#daily"><i class="fas fa-sun"></i> Daily Care</a>
+        <a href="#exercise"><i class="fas fa-walking"></i> Exercise</a>
+        <a href="#emotional"><i class="fas fa-heart"></i> Emotional Support</a>
+        <a href="#safety"><i class="fas fa-shield-alt"></i> Safety</a>
+        <a href="#sleep"><i class="fas fa-bed"></i> Sleep</a>
+        <a href="#medication"><i class="fas fa-pills"></i> Medication</a>
+        <a href="#activities"><i class="fas fa-puzzle-piece"></i> Activities</a>
+        <a href="#caregiver"><i class="fas fa-users"></i> Caregiver Support</a>
+        <a href="#professional"><i class="fas fa-hospital"></i> Professional Help</a>
+        <a href="#mood-tracker"><i class="fas fa-smile"></i> Mood Tracker</a>
+        <a href="#doctor-notes"><i class="fas fa-file-medical"></i> Doctor’s Notes</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Alzheimer’s Care Guide</h1>
+        <p>never too small
+            to make a difference
+            winter wren</p>
+
+        <!-- Section 1: Understanding Alzheimer’s -->
+        <div class="section" id="understanding">
+            <h2>1. Understanding Alzheimer’s <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <ul>
+                    <li><i class="fas fa-brain"></i>A <span class="highlight">degenerative disease</span> affecting memory, thinking, and behavior.</li>
+                    <li><i class="fas fa-memory"></i>Causes <span class="highlight">memory loss</span>: Forgetting recent events or names.</li>
+                    <li><i class="fas fa-comment-slash"></i>Leads to <span class="highlight">communication difficulties</span>.</li>
+                    <li><i class="fas fa-user-alt-slash"></i>Results in <span class="highlight">loss of independence</span>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Communication Techniques -->
+        <div class="section" id="communication">
+            <h2>2. Communication Techniques <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <ul>
+                    <li><i class="fas fa-comment"></i><span class="highlight">Speak slowly and clearly</span> in short sentences.</li>
+                    <li><i class="fas fa-handshake"></i>Use <span class="highlight">non-verbal cues</span>: Eye contact, gestures.</li>
+                    <li><i class="fas fa-clock"></i>Be patient: Allow time for responses.</li>
+                    <li><i class="fas fa-ban"></i>Don’t argue or correct mistakes.</li>
+                    <li><i class="fas fa-sticky-note"></i>Use reminders: Clocks, labeled objects.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 3: Daily Care & Routine -->
+        <div class="section" id="daily">
+            <h2>3. Daily Care & Routine <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <h3>Morning Care</h3>
+                <ul>
+                    <li><i class="fas fa-sun"></i>Wake up at the same time daily.</li>
+                    <li><i class="fas fa-toothbrush"></i>Assist with hygiene: Step-by-step instructions.</li>
+                    <li><i class="fas fa-tshirt"></i>Choose <span class="highlight">easy-to-wear clothing</span>.</li>
+                    <li><i class="fas fa-glass-water"></i>Ensure morning hydration.</li>
+                </ul>
+                <h3>Meals & Nutrition</h3>
+                <ul>
+                    <li><i class="fas fa-utensils"></i>Encourage <span class="highlight">small, frequent meals</span>.</li>
+                    <li><i class="fas fa-carrot"></i>Best foods: Spinach, berries, nuts.</li>
+                    <li><i class="fas fa-ban"></i>Avoid: Sugar, processed foods, caffeine.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 4: Exercise -->
+        <div class="section" id="exercise">
+            <h2>4. Exercise & Physical Activity <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <ul>
+                    <li><i class="fas fa-walking"></i><span class="highlight">Gentle exercises</span>: Walking, stretching.</li>
+                    <li><i class="fas fa-hand-paper"></i>Hand exercises: Squeezing a soft ball.</li>
+                    <li><i class="fas fa-music"></i>Dancing to music boosts mood.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 5: Emotional Support -->
+        <div class="section" id="emotional">
+            <h2>5. Emotional & Behavioral Support <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <ul>
+                    <li><i class="fas fa-heart"></i><span class="highlight">Stay calm</span>: Hold their hand, reassure them.</li>
+                    <li><i class="fas fa-volume-mute"></i>Avoid loud noises.</li>
+                    <li><i class="fas fa-music"></i>Use <span class="highlight">music therapy</span> to soothe.</li>
+                    <li><i class="fas fa-seedling"></i>Engage in familiar activities.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 6: Safety -->
+        <div class="section" id="safety">
+            <h2>6. Preventing Wandering & Safety <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <ul>
+                    <li><i class="fas fa-lock"></i>Keep doors locked safely.</li>
+                    <li><i class="fas fa-sign"></i>Label rooms clearly.</li>
+                    <li><i class="fas fa-lightbulb"></i>Install night lights.</li>
+                    <li><i class="fas fa-map-marker-alt"></i>Use GPS tracking if needed.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 7: Sleep -->
+        <div class="section" id="sleep">
+            <h2>7. Sleeping & Resting Habits <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <ul>
+                    <li><i class="fas fa-bed"></i>Create a <span class="highlight">relaxing bedtime routine</span>.</li>
+                    <li><i class="fas fa-clock"></i>Limit daytime naps.</li>
+                    <li><i class="fas fa-coffee"></i>No caffeine in the evening.</li>
+                    <li><i class="fas fa-lightbulb"></i>Use a soft night light.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 8: Medication -->
+        <div class="section" id="medication">
+            <h2>8. Medication & Medical Support <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <ul>
+                    <li><i class="fas fa-pills"></i>Follow prescriptions strictly.</li>
+                    <li><i class="fas fa-lock"></i>Store medicines safely.</li>
+                    <li><i class="fas fa-stethoscope"></i>Regular neurologist visits.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 9: Activities -->
+        <div class="section" id="activities">
+            <h2>9. Activities & Mind Engagement <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <ul>
+                    <li><i class="fas fa-puzzle-piece"></i>Puzzles and memory games.</li>
+                    <li><i class="fas fa-images"></i>Look at old photo albums.</li>
+                    <li><i class="fas fa-paint-brush"></i>Coloring or drawing.</li>
+                    <li><i class="fas fa-seedling"></i>Gardening for hands-on fun.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 10: Caregiver Support -->
+        <div class="section" id="caregiver">
+            <h2>10. Caregiver Self-Care <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <ul>
+                    <li><i class="fas fa-users"></i>Join a <span class="highlight">support group</span>.</li>
+                    <li><i class="fas fa-coffee"></i>Take breaks regularly.</li>
+                    <li><i class="fas fa-hands-helping"></i>Ask for help from others.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 11: Professional Help -->
+        <div class="section" id="professional">
+            <h2>11. When to Seek Professional Help <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <ul>
+                    <li><i class="fas fa-exclamation-triangle"></i>Frequent aggression or violence.</li>
+                    <li><i class="fas fa-utensils"></i>Stops eating or drinking.</li>
+                    <li><i class="fas fa-hospital"></i>Consider a care home if needed.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 12: Mood & Behavior Tracker -->
+        <div class="section" id="mood-tracker">
+            <h2>12. Mood & Behavior Tracker <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <form id="mood-form">
+                    <div class="form-group">
+                        <label for="mood-date">Date</label>
+                        <input type="date" id="mood-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mood">Mood</label>
+                        <select id="mood" required>
+                            <option value="">Select Mood</option>
+                            <option value="Happy">Happy</option>
+                            <option value="Calm">Calm</option>
+                            <option value="Anxious">Anxious</option>
+                            <option value="Agitated">Agitated</option>
+                            <option value="Sad">Sad</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea id="notes" rows="3" placeholder="Describe behavior or triggers..."></textarea>
+                    </div>
+                    <button type="submit">Log Entry</button>
+                </form>
+                <table id="mood-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Mood</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 13: Doctor’s Note Upload -->
+        <div class="section" id="doctor-notes">
+            <h2>13. Doctor’s Note Upload <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <form id="upload-form">
+                    <div class="form-group">
+                        <label for="note-file">Upload Prescription or Report (Image Only)</label>
+                        <input type="file" id="note-file" accept="image/*" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="note-desc">Description</label>
+                        <input type="text" id="note-desc" placeholder="E.g., Prescription from Dr. Smith" required>
+                    </div>
+                    <button type="submit">Upload</button>
+                </form>
+                <table id="upload-table">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal for Image Preview -->
+        <div class="modal" id="image-modal">
+            <div class="modal-content">
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+                <img id="modal-image" src="" alt="Doctor’s Note">
+            </div>
+        </div>
+
+        <!-- Final Words -->
+        <div class="section">
+            <h2>Final Words <i class="fas fa-chevron-down"></i></h2>
+            <div class="section-content">
+                <p>Caring for an Alzheimer’s patient is tough, but with <span class="highlight">love, patience, and knowledge</span>, you can make a difference.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Alzheimer’s Care Guide | Made with <i class="fas fa-heart"></i></p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Sidebar Toggle
+        const menuBtn = document.querySelector('.menu-btn');
+        const closeBtn = document.querySelector('.close-btn');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.overlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        menuBtn.addEventListener('click', toggleSidebar);
+        closeBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // Collapsible Sections
+        document.querySelectorAll('.section h2').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                content.classList.toggle('active');
+                header.classList.toggle('active');
+            });
+        });
+
+        // Mood Tracker
+        const moodForm = document.getElementById('mood-form');
+        const moodTable = document.getElementById('mood-table').querySelector('tbody');
+        moodForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const date = document.getElementById('mood-date').value;
+            const mood = document.getElementById('mood').value;
+            const notes = document.getElementById('notes').value;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${date}</td><td>${mood}</td><td>${notes}</td>`;
+            moodTable.appendChild(row);
+
+            moodForm.reset();
+        });
+
+        // Doctor’s Note Upload with localStorage
+        const uploadForm = document.getElementById('upload-form');
+        const uploadTable = document.getElementById('upload-table').querySelector('tbody');
+        const modal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalClose = document.querySelector('.modal-close');
+
+        // Load existing uploads from localStorage
+        let uploads = JSON.parse(localStorage.getItem('doctorNotes')) || [];
+        uploads.forEach((upload, index) => {
+            addUploadToTable(upload, index);
+        });
+
+        uploadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('note-file');
+            const desc = document.getElementById('note-desc').value;
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Image = e.target.result;
+                    const upload = { name: file.name, desc: desc, data: base64Image };
+                    uploads.push(upload);
+                    localStorage.setItem('doctorNotes', JSON.stringify(uploads));
+                    addUploadToTable(upload, uploads.length - 1);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            uploadForm.reset();
+        });
+
+        function addUploadToTable(upload, index) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${upload.name}</td>
+                <td>${upload.desc}</td>
+                <td><button class="view-btn" data-index="${index}">View</button></td>
+            `;
+            uploadTable.appendChild(row);
+
+            row.querySelector('.view-btn').addEventListener('click', () => {
+                modalImage.src = upload.data;
+                modal.classList.add('active');
+            });
+        }
+
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
